@@ -1,10 +1,25 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
-const port = process.env.PUBLIC_PORT;
+const port = 3000;
 require('dotenv').config()
-// define the ping route
+const mongodburi = process.env.MONGODB_URI;
+
 app.get('/ping',(req,res)=>{
   res.send('pong');
+});
+
+//connecting mongoDB
+mongoose.connect(mongodburi)
+
+//define route to check mongodb connection
+app.get('/mongoDbConnection',(req,res)=>{
+  if(mongoose.connection.readyState === 1){
+    res.status(200).json('MongoDB is connected successfully.')
+  }
+  else{
+    res.status(400).json('Error connecting to MongoDB.')
+  }
 });
 
 if (require.main === module) {
