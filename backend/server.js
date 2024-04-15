@@ -4,11 +4,10 @@ const app = express();
 const port = 3000;
 require('dotenv').config()
 const mongodburi = process.env.MONGODB_URI;
-
-app.get('/ping',(req,res)=>{
-  res.send('pong');
-});
-
+const bodyParser = require('body-parser');
+const routes = require('./routes');
+app.use(bodyParser.json())
+app.use('/',routes);
 //connecting mongoDB
 mongoose.connect(mongodburi)
 
